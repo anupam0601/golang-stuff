@@ -45,6 +45,13 @@ func main() {
 		}
 		fmt.Printf("%s\n", data)
 		//!-MarshalIndents
+
+		// Unmarshaling the data we got in previous block
+		var titles []struct{ Title string }
+		if err := json.Unmarshal(data, &titles); err != nil {
+			log.Fatalf("JSON unmarshalling failed %s", err)
+		}
+		fmt.Println(titles)
 	}
 
 }
