@@ -1,0 +1,2 @@
+Reading file with go function
+Read file successfully
