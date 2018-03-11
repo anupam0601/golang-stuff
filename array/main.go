@@ -14,4 +14,5 @@ func main() {
 	q := [3]string{"go", "java", "python"}
 	fmt.Println("array- ", anupam)
 	fmt.Println("array2- ", q)
+	fmt.Println("undetermined-", debnath)
 }
