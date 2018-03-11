@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	client, err := ssh.Dial("tcp", "192.168.0.104:22", &ssh.ClientConfig{
-		User: "anupamdebnath",
+	client, err := ssh.Dial("tcp", "host:22", &ssh.ClientConfig{
+		User: "username",
 		Auth: []ssh.AuthMethod{
-			ssh.Password("ANUPAM"),
+			ssh.Password("password"),
 		},
 		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 			return nil
