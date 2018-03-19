@@ -8,14 +8,17 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
+
+	"github.com/mholt/archiver"
 )
 
-// Path to create file
-var path = currentPath() + "/" + os.Args[1]
+// Unix Time stamp converted to string
+var ts = strconv.FormatInt(time.Now().Unix(), 10)
 
-// Unix Time stamp
-var t = time.Now().Unix()
+// Path to create file
+var path = currentPath() + "/" + ts + os.Args[1]
 
 // Get current path
 func currentPath() string {
@@ -28,7 +31,7 @@ func currentPath() string {
 }
 
 // Create txt file
-func createTxtFile() {
+func createTxtFile() string {
 	// open file using READ & WRITE permission
 	data := []byte("hello world\n")
 	err := ioutil.WriteFile(path, data, 0644)
@@ -36,6 +39,8 @@ func createTxtFile() {
 		panic(err)
 	}
 	fmt.Println("==> done writing to file")
+	fmt.Println(path)
+	return path
 }
 
 // Create gz file
@@ -51,15 +56,28 @@ func createGzFile() {
 	fmt.Println("==> done creating gz file")
 }
 
+// Create zip file
+// Taking path as the return value from createTxtFile func
+func createZipFile() {
+	var pathZip = currentPath() + "/" + os.Args[3]
+	err := archiver.Zip.Make(pathZip, []string{createTxtFile()})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("==> done creating Zip file")
+}
+
+// Main Block
 func main() {
 	if os.Args[2] == "txt" {
 		createTxtFile()
 	} else if os.Args[2] == "gz" {
 		createGzFile()
+	} else if os.Args[2] == "zip" {
+		createZipFile()
 	} else {
 		log.Fatal("file extension is not valid")
 	}
 
-	log.Println(t)
-
+	// log.Println(ts)
 }
