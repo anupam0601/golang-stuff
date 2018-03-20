@@ -1,4 +1,4 @@
-package main
+package awsftp
 
 import (
 	"fmt"
@@ -11,7 +11,8 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func main() {
+// Awsftp : function to be exported
+func Awsftp(localpath string) {
 	client, err := ssh.Dial("tcp", "transfer.us.syncroncloud.team:22", &ssh.ClientConfig{
 		User: "snty_tnntprod003",
 		Auth: []ssh.AuthMethod{
@@ -45,15 +46,15 @@ func main() {
 	// // fileName := "test_anupam_demo.txt"
 
 	//  Local file path to test   and   Folder on a remote machine
-	var localFilePath = "/home/anupam/files/test_demo_anupam.txt"
+	// var localFilePath = localpath
 	var remoteDir = "/input/"
-	srcFile, err := os.Open(localFilePath)
+	srcFile, err := os.Open(localpath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer srcFile.Close()
 
-	var remoteFileName = path.Base(localFilePath)
+	var remoteFileName = path.Base(localpath)
 	dstFile, err := sftp.Create(path.Join(remoteDir, remoteFileName))
 	if err != nil {
 		log.Fatal(err)

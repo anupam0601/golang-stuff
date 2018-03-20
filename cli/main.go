@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	sftpcl "github.com/anupam0601/golang-stuff/cli/awsftp"
 	"github.com/mholt/archiver"
 )
 
@@ -44,7 +45,7 @@ func createTxtFile() string {
 }
 
 // Create gz file
-func createGzFile() {
+func createGzFile() string {
 	var b bytes.Buffer
 	w := gzip.NewWriter(&b)
 	w.Write([]byte("hello, world\n"))
@@ -54,30 +55,33 @@ func createGzFile() {
 		panic(err)
 	}
 	fmt.Println("==> done creating gz file")
+	return path
 }
 
 // Create zip file
 // Taking path as the return value from createTxtFile func
-func createZipFile() {
-	var pathZip = currentPath() + "/" + os.Args[3]
+func createZipFile() string {
+	var pathZip = currentPath() + "/" + ts + os.Args[3]
 	err := archiver.Zip.Make(pathZip, []string{createTxtFile()})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("==> done creating Zip file")
+	return pathZip
 }
 
 // Main Block
 func main() {
 	if os.Args[2] == "txt" {
-		createTxtFile()
+		var txtFilePath = createTxtFile()
+		sftpcl.Awsftp(txtFilePath)
 	} else if os.Args[2] == "gz" {
-		createGzFile()
+		var gzFilePath = createGzFile()
+		sftpcl.Awsftp(gzFilePath)
 	} else if os.Args[2] == "zip" {
-		createZipFile()
+		var zipFilePath = createGzFile()
+		sftpcl.Awsftp(zipFilePath)
 	} else {
 		log.Fatal("file extension is not valid")
 	}
-
-	// log.Println(ts)
 }
