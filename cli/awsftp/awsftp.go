@@ -13,8 +13,8 @@ import (
 
 // Awsftp : function to be exported
 func Awsftp(localpath string) {
-	client, err := ssh.Dial("tcp", "transfer.us.syncroncloud.team:22", &ssh.ClientConfig{
-		User: "snty_tnntprod003",
+	client, err := ssh.Dial("tcp", "host:22", &ssh.ClientConfig{
+		User: "user",
 		Auth: []ssh.AuthMethod{
 			ssh.Password("$yncron1234"),
 		},
