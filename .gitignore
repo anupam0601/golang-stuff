@@ -14,3 +14,5 @@ File_Operations/writefile/filetowrite.txt
 File_Operations/parallelRead/main
 File_Operations/BasicOperations/anupam.txt
 networking/dns_lookup/dns_lookup
+awsworker/awsworker
+networking/dayTimeServer/dayTimeServer
