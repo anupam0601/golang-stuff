@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"time"
@@ -84,4 +85,10 @@ func main() {
 	} else {
 		log.Fatal("file extension is not valid")
 	}
+	// Command line commands execution
+	out, err := exec.Command("ls").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("The date is %s\n", out)
 }

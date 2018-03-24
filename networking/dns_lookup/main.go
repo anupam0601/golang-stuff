@@ -26,3 +26,4 @@ func main() {
 	fmt.Println("Resolved address is: ", addr.String())
 	os.Exit(0)
 }
+	
