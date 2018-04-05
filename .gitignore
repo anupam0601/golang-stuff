@@ -14,5 +14,10 @@ File_Operations/writefile/filetowrite.txt
 File_Operations/parallelRead/main
 File_Operations/BasicOperations/anupam.txt
 networking/dns_lookup/dns_lookup
+<<<<<<< 2d6e77c5f3985b584e246aab0940fed62bcd575c
 awsworker/awsworker
 networking/dayTimeServer/dayTimeServer
+=======
+*.zip
+*.txt
+>>>>>>> added cli features

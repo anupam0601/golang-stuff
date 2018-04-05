@@ -41,7 +41,7 @@ func createTxtFile() string {
 		panic(err)
 	}
 	fmt.Println("==> done writing to file")
-	fmt.Println(path)
+	fmt.Println("Text file ===>", path)
 	return path
 }
 
@@ -56,6 +56,7 @@ func createGzFile() string {
 		panic(err)
 	}
 	fmt.Println("==> done creating gz file")
+	fmt.Println("Gz file name ==>", path)
 	return path
 }
 
@@ -68,27 +69,40 @@ func createZipFile() string {
 		panic(err)
 	}
 	fmt.Println("==> done creating Zip file")
+	fmt.Println("Zip file name ==>", pathZip)
 	return pathZip
+}
+
+func runCmd() {
+	cmd := exec.Command("awslogs", "get", "sync-service", "--watch")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
 
 // Main Block
 func main() {
-	if os.Args[2] == "txt" {
+	// Using switch case to identify file masks from command line args
+	switch {
+	case os.Args[2] == "txt":
 		var txtFilePath = createTxtFile()
 		sftpcl.Awsftp(txtFilePath)
-	} else if os.Args[2] == "gz" {
+	case os.Args[2] == "gz":
 		var gzFilePath = createGzFile()
 		sftpcl.Awsftp(gzFilePath)
-	} else if os.Args[2] == "zip" {
-		var zipFilePath = createGzFile()
+	case os.Args[2] == "zip":
+		var zipFilePath = createZipFile()
 		sftpcl.Awsftp(zipFilePath)
-	} else {
-		log.Fatal("file extension is not valid")
+	default:
+		log.Fatal("Extension not valid, Please provide a proper extension")
 	}
+<<<<<<< 2d6e77c5f3985b584e246aab0940fed62bcd575c
 	// Command line commands execution
 	out, err := exec.Command("ls").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("The date is %s\n", out)
+=======
+	runCmd()
+>>>>>>> added cli features
 }
