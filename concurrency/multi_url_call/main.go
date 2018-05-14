@@ -4,11 +4,20 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	mgo "gopkg.in/mgo.v2"
 )
 
+//HTTPResponse struct
 type HTTPResponse struct {
 	status string
 	body   []byte
+}
+
+//DB struct
+type datmg struct {
+	Stat string   `bson:"status"`
+	Dat  []string `bson:"data"`
 }
 
 func main() {
@@ -22,12 +31,46 @@ func main() {
 		go DoHTTPGet(url, ch)
 
 	}
-	// Get the response
-	for range urls {
-		fmt.Println((<-ch).status)
-		// fmt.Println((<-ch).body)
+	// Getting data in a var
+	newmgdat := datmg{
+		Stat: (<-ch).status,
+		Dat:  []string{string((<-ch).body)},
+	}
+
+	fmt.Println(newmgdat)
+
+	Host := []string{
+		"127.0.0.1:27017",
+		// replica set addrs...
+	}
+	const (
+		Database   = "Godb"
+		Collection = "GoColl"
+	)
+	session, err := mgo.DialWithInfo(&mgo.DialInfo{
+		Addrs: Host,
+		// Username: Username,
+		// Password: Password,
+		// Database: Database,
+		// DialServer: func(addr *mgo.ServerAddr) (net.Conn, error) {
+		// 	return tls.Dial("tcp", addr.String(), &tls.Config{})
+		// },
+	})
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+
+	// Collection
+	c := session.DB(Database).C(Collection)
+
+	// Insert
+	if err := c.Insert(newmgdat); err != nil {
+		panic(err)
 	}
 }
+
+//DoHTTPGet : HTTP get function
 func DoHTTPGet(url string, ch chan<- HTTPResponse) {
 	//Execute the HTTP get
 	httpResponse, _ := http.Get(url)
