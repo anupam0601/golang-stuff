@@ -28,45 +28,53 @@ func main() {
 	urls := [2]string{"https://jsonplaceholder.typicode.com/posts/1", "https://jsonplaceholder.typicode.com/posts/1/comments"}
 	for _, url := range urls {
 		//For each URL call the DOHTTPGet function (notice the go keyword)
+		// Sender
 		go DoHTTPGet(url, ch)
 
 	}
-	// Getting data in a var
-	newmgdat := datmg{
-		Stat: (<-ch).status,
-		Dat:  []string{string((<-ch).body)},
-	}
 
-	fmt.Println(newmgdat)
+	// Getting data in a var. Receiver (Blocking)
+	// Running for loop on channel data and storing it
+	// in a variable
+	for n := range ch {
+		// fmt.Println(n.status)
+		newmgdat := datmg{
+			Stat: n.status,
+			Dat:  []string{string(n.body)},
+		}
 
-	Host := []string{
-		"127.0.0.1:27017",
-		// replica set addrs...
-	}
-	const (
-		Database   = "Godb"
-		Collection = "GoColl"
-	)
-	session, err := mgo.DialWithInfo(&mgo.DialInfo{
-		Addrs: Host,
-		// Username: Username,
-		// Password: Password,
-		// Database: Database,
-		// DialServer: func(addr *mgo.ServerAddr) (net.Conn, error) {
-		// 	return tls.Dial("tcp", addr.String(), &tls.Config{})
-		// },
-	})
-	if err != nil {
-		panic(err)
-	}
-	defer session.Close()
+		fmt.Println(newmgdat)
 
-	// Collection
-	c := session.DB(Database).C(Collection)
+		// Mongo DB Operations follows
+		Host := []string{
+			"127.0.0.1:27017",
+			// replica set addrs...
+		}
+		const (
+			Database   = "Godb"
+			Collection = "GoColl"
+		)
+		session, err := mgo.DialWithInfo(&mgo.DialInfo{
+			Addrs: Host,
+			// Username: Username,
+			// Password: Password,
+			// Database: Database,
+			// DialServer: func(addr *mgo.ServerAddr) (net.Conn, error) {
+			// 	return tls.Dial("tcp", addr.String(), &tls.Config{})
+			// },
+		})
+		if err != nil {
+			panic(err)
+		}
+		defer session.Close()
 
-	// Insert
-	if err := c.Insert(newmgdat); err != nil {
-		panic(err)
+		// Collection
+		c := session.DB(Database).C(Collection)
+
+		// Insert
+		if err := c.Insert(newmgdat); err != nil {
+			panic(err)
+		}
 	}
 }
 
