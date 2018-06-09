@@ -2,4 +2,7 @@ To run the microservice in kubernetes local
 ===========================================
 1. kubectl run go-micro-5  --image=adebnath/go-micro --port=8080
 2. kubectl get pods
+3. kubectl logs <pod name>
 3. kubectl expose deployment go-micro-5 --type=NodePort --name=go-ms
+4. kubectl get services ---> To get the port and IP at which the service is exposed
+5. kubectl decribe service go-ms

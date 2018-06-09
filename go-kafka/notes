@@ -1,0 +1,15 @@
+# Kafka setup in mac
+# this will install java 1.8, zookeeper, and kafka
+brew install kafka
+
+# this will run ZK and kafka as services
+brew services start zookeeper
+brew services start kafka
+
+
+
+# To edit kafka or zookeeper properties
+To have launchd start kafka now and restart at login:
+  brew services start kafka
+Or, if you don't want/need a background service you can just run:
+  zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties & kafka-server-start /usr/local/etc/kafka/server.properties
