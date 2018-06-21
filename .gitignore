@@ -21,3 +21,4 @@ networking/dayTimeServer/dayTimeServer
 *.zip
 *.txt
 >>>>>>> added cli features
+structsmethods/main.go
