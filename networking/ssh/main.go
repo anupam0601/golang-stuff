@@ -12,10 +12,10 @@ import (
 )
 
 func main() {
-	client, err := ssh.Dial("tcp", "transfer.us.syncroncloud.team:22", &ssh.ClientConfig{
-		User: "snty_tnntprod003",
+	client, err := ssh.Dial("tcp", "host", &ssh.ClientConfig{
+		User: "user",
 		Auth: []ssh.AuthMethod{
-			ssh.Password("$yncron1234"),
+			ssh.Password("password"),
 		},
 		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 			return nil
