@@ -2,11 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"gopkg.in/mgo.v2/bson"
 
+	"github.com/anupam0601/golang-stuff/movies-restapi/util"
 	"github.com/gorilla/mux"
 	. "github.com/mlabouardy/movies-restapi/config"
 	. "github.com/mlabouardy/movies-restapi/dao"
@@ -18,6 +21,11 @@ var dao = MoviesDAO{}
 
 // GET list of movies
 func AllMoviesEndPoint(w http.ResponseWriter, r *http.Request) {
+	t := time.Now()
+	defer func() {
+		util.StatTime("parse.timetaken", time.Since(t))
+		fmt.Println("sending perf stats to StatsD...")
+	}()
 	movies, err := dao.FindAll()
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
