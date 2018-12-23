@@ -2,34 +2,31 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
-	"time"
-
-	statsd "gopkg.in/alexcesaro/statsd.v2"
 
 	. "github.com/anupam0601/golang-stuff/movies-restapi/config"
 	. "github.com/anupam0601/golang-stuff/movies-restapi/dao"
 	. "github.com/anupam0601/golang-stuff/movies-restapi/models"
-	"github.com/anupam0601/golang-stuff/movies-restapi/util"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var config = Config{}
 var dao = MoviesDAO{}
-var c, err = statsd.New(
-	statsd.TagsFormat(statsd.InfluxDB),
-	statsd.Tags("region", "us", "app", "my_app"),
-)
+
+// var c, err = statsd.New(
+// 	statsd.TagsFormat(statsd.InfluxDB),
+// 	statsd.Tags("region", "us", "app", "my_app"),
+// )
 
 // GET list of movies
 func AllMoviesEndPoint(w http.ResponseWriter, r *http.Request) {
-	t := time.Now()
-	defer func() {
-		util.StatTime("anupam.timetaken", time.Since(t))
-		fmt.Println("sending perf stats to StatsD...")
-	}()
+	// t := time.Now()
+	// defer func() {
+	// 	util.StatTime("anupam.timetaken", time.Since(t))
+	// 	fmt.Println("sending perf stats to StatsD...")
+	// }()
 	movies, err := dao.FindAll()
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -50,20 +47,20 @@ func FindMovieEndpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST a new movie
-// func CreateMovieEndPoint(w http.ResponseWriter, r *http.Request) {
-// 	defer r.Body.Close()
-// 	var movie Movie
-// 	if err := json.NewDecoder(r.Body).Decode(&movie); err != nil {
-// 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
-// 		return
-// 	}
-// 	movie.ID = bson.NewObjectId()
-// 	if err := dao.Insert(movie); err != nil {
-// 		respondWithError(w, http.StatusInternalServerError, err.Error())
-// 		return
-// 	}
-// 	respondWithJson(w, http.StatusCreated, movie)
-// }
+func CreateMovieEndPoint(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	var movie Movie
+	if err := json.NewDecoder(r.Body).Decode(&movie); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	movie.ID = bson.NewObjectId()
+	if err := dao.Insert(movie); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respondWithJson(w, http.StatusCreated, movie)
+}
 
 // PUT update an existing movie
 func UpdateMovieEndPoint(w http.ResponseWriter, r *http.Request) {
@@ -119,11 +116,11 @@ func init() {
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
-	// r.HandleFunc("/movies", CreateMovieEndPoint).Methods("POST")
+	r.HandleFunc("/movies", CreateMovieEndPoint).Methods("POST")
 	r.HandleFunc("/movies", UpdateMovieEndPoint).Methods("PUT")
 	r.HandleFunc("/movies", DeleteMovieEndPoint).Methods("DELETE")
 	r.HandleFunc("/movies/{id}", FindMovieEndpoint).Methods("GET")
-	if err := http.ListenAndServe(":3000", r); err != nil {
+	if err := http.ListenAndServe(":3100", r); err != nil {
 		log.Fatal(err)
 	}
 }

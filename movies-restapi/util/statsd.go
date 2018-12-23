@@ -27,7 +27,7 @@ func StatGauge(metric string, value int) {
 
 func statsdSender() {
 	for s := range queue {
-		if conn, err := net.Dial("udp", "localhost:8125"); err == nil {
+		if conn, err := net.Dial("udp", "127.0.0.1:8125"); err == nil {
 			io.WriteString(conn, s)
 			conn.Close()
 		}
