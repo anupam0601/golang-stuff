@@ -1,0 +1,15 @@
+goapp:
+  build: .
+  volumes:
+    - ./:/go/src/app
+  ports:
+    - "3100:3100"
+  links:
+    - mongo
+mongo:
+  image: mongo:latest
+  container_name: "mongodb"
+  # volumes:
+  #   - /data:/data/db
+  ports:
+    - "27017:27017"

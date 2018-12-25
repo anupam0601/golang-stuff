@@ -1,0 +1,8 @@
+1. Keep statsd and go app in one docker container
+2. MongoDB, Telegraf, influxdb and grafana in different containers
+
+
+Steps and Approach:
+===================
+1. Create a docker-compose file which links go app to mongodb container
+2. Use mongodb's container name and port to connect from go app container

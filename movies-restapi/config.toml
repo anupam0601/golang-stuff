@@ -1,3 +1,4 @@
-# Use docker ip for connecting to mongodb
-server="172.17.0.1:27017"
+# Use docker container name and mongo port to connect to mongodb container
+# server="172.17.0.1:27017"
+server="mongodb:27017"
 database="movies_db"
