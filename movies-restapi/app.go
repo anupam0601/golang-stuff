@@ -2,12 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	. "github.com/anupam0601/golang-stuff/movies-restapi/config"
 	. "github.com/anupam0601/golang-stuff/movies-restapi/dao"
 	. "github.com/anupam0601/golang-stuff/movies-restapi/models"
+	"github.com/anupam0601/golang-stuff/movies-restapi/util"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -15,6 +18,7 @@ import (
 var config = Config{}
 var dao = MoviesDAO{}
 
+// util.StatCount
 // var c, err = statsd.New(
 // 	statsd.TagsFormat(statsd.InfluxDB),
 // 	statsd.Tags("region", "us", "app", "my_app"),
@@ -22,17 +26,18 @@ var dao = MoviesDAO{}
 
 // GET list of movies
 func AllMoviesEndPoint(w http.ResponseWriter, r *http.Request) {
-	// t := time.Now()
-	// defer func() {
-	// 	util.StatTime("anupam.timetaken", time.Since(t))
-	// 	fmt.Println("sending perf stats to StatsD...")
-	// }()
+	t := time.Now()
+	defer func() {
+		util.StatTime("anupam.timetaken", time.Since(t))
+		fmt.Println("sending perf stats to StatsD...")
+	}()
 	movies, err := dao.FindAll()
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 	respondWithJson(w, http.StatusOK, movies)
+	fmt.Println("Sent REST response...>")
 }
 
 // GET a movie by its ID

@@ -1,15 +1,22 @@
-goapp:
-  build: .
-  volumes:
-    - ./:/go/src/app
-  ports:
-    - "3100:3100"
-  links:
-    - mongo
-mongo:
-  image: mongo:latest
-  container_name: "mongodb"
-  # volumes:
-  #   - /data:/data/db
-  ports:
-    - "27017:27017"
+version: "3"
+services:
+  goapp:
+    build: .
+    container_name: "go-rest-app"
+    volumes:
+      - ./:/go/src/app
+    ports:
+      - "3100:3100"
+  mongo:
+    image: mongo:latest
+    container_name: "mongodb"
+    # volumes:
+    #   - /data:/data/db
+    ports:
+      - "27017:27017"
+  statsd:
+    build: ./statsd
+    container_name: "statsd"
+    ports:
+        - 8125:8125/udp
+        - 8126:8126
