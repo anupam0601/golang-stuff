@@ -1,0 +1,30 @@
+version: "2"
+services:
+  # file_monitoring:
+  #   build:
+  #     context: .
+  #     dockerfile: file_monitoring/Dockerfile
+  #   restart: always
+  #   volumes:
+  #   - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
+  #   container_name: file_monitoring
+  #   ports: []
+  files_creator:
+    build:
+      context: .
+      dockerfile: files_creator/Dockerfile
+    restart: always
+    volumes:
+    - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
+    container_name: files_creator
+    ports:
+    - 8800:8081
+  # files_uploader:
+  #   build:
+  #     context: .
+  #     dockerfile: files_uploader/Dockerfile
+  #   restart: always
+  #   volumes:
+  #   - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
+  #   container_name: files_uploader
+  #   ports: []
