@@ -35,3 +35,25 @@ func (l loggingMiddleware) StoreFileMetadata(ctx context.Context, fileName strin
 	}()
 	return l.next.StoreFileMetadata(ctx, fileName, timeStamp)
 }
+
+type hiMiddleware struct {
+	next FilesCreatorService
+}
+
+// HiMiddleware returns a FilesCreatorService Middleware.
+func HiMiddleware() Middleware {
+	return func(next FilesCreatorService) FilesCreatorService {
+		return &hiMiddleware{next}
+	}
+
+}
+func (h hiMiddleware) CreateFiles(ctx context.Context, numberOfFiles string) (s0 string) {
+	// Implement your middleware logic here
+
+	return h.next.CreateFiles(ctx, numberOfFiles)
+}
+func (h hiMiddleware) StoreFileMetadata(ctx context.Context, fileName string, timeStamp string) (s0 string) {
+	// Implement your middleware logic here
+
+	return h.next.StoreFileMetadata(ctx, fileName, timeStamp)
+}

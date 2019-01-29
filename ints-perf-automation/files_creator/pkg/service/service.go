@@ -6,17 +6,17 @@ import "context"
 // FilesCreatorService describes the service.
 type FilesCreatorService interface {
 	// Add your methods here
-	CreateFiles(ctx context.Context, numberOfFiles int) error
-	StoreFileMetadata(ctx context.Context, fileName string, timeStamp string) error
+	CreateFiles(ctx context.Context, numberOfFiles string) string
+	StoreFileMetadata(ctx context.Context, fileName string, timeStamp string) string
 	// CreateFiles(typeOfFile string, numberOfFiles int) error
 	// StoreFileMetadata(fileName string, timeStamp string) error
 }
 
 type basicFilesCreatorService struct{}
 
-func (b *basicFilesCreatorService) CreateFiles(ctx context.Context, numberOfFiles int) (e0 error) {
+func (b *basicFilesCreatorService) CreateFiles(ctx context.Context, numberOfFiles int) string {
 	// TODO implement the business logic of CreateFiles
-	return e0
+	return "anupam"
 }
 func (b *basicFilesCreatorService) StoreFileMetadata(ctx context.Context, fileName string, timeStamp string) (e0 error) {
 	// TODO implement the business logic of StoreFileMetadata

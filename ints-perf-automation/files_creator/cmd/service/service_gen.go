@@ -3,11 +3,8 @@ package service
 
 import (
 	endpoint "github.com/anupam0601/golang-stuff/ints-perf-automation/files_creator/pkg/endpoint"
-	http1 "github.com/anupam0601/golang-stuff/ints-perf-automation/files_creator/pkg/http"
-	service "github.com/anupam0601/golang-stuff/ints-perf-automation/files_creator/pkg/service"
 	endpoint1 "github.com/go-kit/kit/endpoint"
 	log "github.com/go-kit/kit/log"
-	prometheus "github.com/go-kit/kit/metrics/prometheus"
 	opentracing "github.com/go-kit/kit/tracing/opentracing"
 	http "github.com/go-kit/kit/transport/http"
 	group "github.com/oklog/oklog/pkg/group"
@@ -21,17 +18,10 @@ func createService(endpoints endpoint.Endpoints) (g *group.Group) {
 }
 func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[string][]http.ServerOption {
 	options := map[string][]http.ServerOption{
-		"CreateFiles":       {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "CreateFiles", logger))},
-		"StoreFileMetadata": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "StoreFileMetadata", logger))},
+		"CreateFiles":       {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "CreateFiles", logger))},
+		"StoreFileMetadata": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "StoreFileMetadata", logger))},
 	}
 	return options
-}
-func addDefaultEndpointMiddleware(logger log.Logger, duration *prometheus.Summary, mw map[string][]endpoint1.Middleware) {
-	mw["CreateFiles"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "CreateFiles")), endpoint.InstrumentingMiddleware(duration.With("method", "CreateFiles"))}
-	mw["StoreFileMetadata"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "StoreFileMetadata")), endpoint.InstrumentingMiddleware(duration.With("method", "StoreFileMetadata"))}
-}
-func addDefaultServiceMiddleware(logger log.Logger, mw []service.Middleware) []service.Middleware {
-	return append(mw, service.LoggingMiddleware(logger))
 }
 func addEndpointMiddlewareToAllMethods(mw map[string][]endpoint1.Middleware, m endpoint1.Middleware) {
 	methods := []string{"CreateFiles", "StoreFileMetadata"}

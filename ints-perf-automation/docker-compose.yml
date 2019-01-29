@@ -13,12 +13,12 @@ services:
     build:
       context: .
       dockerfile: files_creator/Dockerfile
-    restart: always
-    volumes:
-    - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
     container_name: files_creator
     ports:
     - 8800:8081
+    restart: always
+    volumes:
+    - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
   # files_uploader:
   #   build:
   #     context: .
