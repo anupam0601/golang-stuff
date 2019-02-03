@@ -17,14 +17,11 @@ func createService(endpoints endpoint.Endpoints) (g *group.Group) {
 	return g
 }
 func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[string][]http.ServerOption {
-	options := map[string][]http.ServerOption{
-		"CreateFiles":       {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "CreateFiles", logger))},
-		"StoreFileMetadata": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "StoreFileMetadata", logger))},
-	}
+	options := map[string][]http.ServerOption{"CreateFiles": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "CreateFiles", logger))}}
 	return options
 }
 func addEndpointMiddlewareToAllMethods(mw map[string][]endpoint1.Middleware, m endpoint1.Middleware) {
-	methods := []string{"CreateFiles", "StoreFileMetadata"}
+	methods := []string{"CreateFiles"}
 	for _, v := range methods {
 		mw[v] = append(mw[v], m)
 	}

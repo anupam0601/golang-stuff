@@ -12,6 +12,5 @@ import (
 func NewHTTPHandler(endpoints endpoint.Endpoints, options map[string][]http.ServerOption) http1.Handler {
 	m := http1.NewServeMux()
 	makeCreateFilesHandler(m, endpoints, options["CreateFiles"])
-	makeStoreFileMetadataHandler(m, endpoints, options["StoreFileMetadata"])
 	return m
 }

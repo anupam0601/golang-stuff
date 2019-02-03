@@ -1,26 +1,25 @@
-// Business logic
 package service
 
-import "context"
+import (
+	"context"
+	"log"
+)
 
 // FilesCreatorService describes the service.
 type FilesCreatorService interface {
 	// Add your methods here
-	CreateFiles(ctx context.Context, numberOfFiles string) string
-	StoreFileMetadata(ctx context.Context, fileName string, timeStamp string) string
-	// CreateFiles(typeOfFile string, numberOfFiles int) error
-	// StoreFileMetadata(fileName string, timeStamp string) error
+	// e.x: Foo(ctx context.Context,s string)(rs string, err error)
+	CreateFiles(ctx context.Context, fileType string) string
 }
 
 type basicFilesCreatorService struct{}
 
-func (b *basicFilesCreatorService) CreateFiles(ctx context.Context, numberOfFiles int) string {
+func (b *basicFilesCreatorService) CreateFiles(ctx context.Context, fileType string) (s0 string) {
 	// TODO implement the business logic of CreateFiles
-	return "anupam"
-}
-func (b *basicFilesCreatorService) StoreFileMetadata(ctx context.Context, fileName string, timeStamp string) (e0 error) {
-	// TODO implement the business logic of StoreFileMetadata
-	return e0
+	if fileType == "txt" {
+		log.Printf("Creating file of type: %s", fileType)
+	}
+	return fileType
 }
 
 // NewBasicFilesCreatorService returns a naive, stateless implementation of FilesCreatorService.

@@ -3,26 +3,23 @@ package service
 import (
 	"flag"
 	"fmt"
-	"net"
-	http1 "net/http"
-	"os"
-	"os/signal"
-	"syscall"
-
 	endpoint "github.com/anupam0601/golang-stuff/ints-perf-automation/files_creator/pkg/endpoint"
 	http "github.com/anupam0601/golang-stuff/ints-perf-automation/files_creator/pkg/http"
 	service "github.com/anupam0601/golang-stuff/ints-perf-automation/files_creator/pkg/service"
 	endpoint1 "github.com/go-kit/kit/endpoint"
 	log "github.com/go-kit/kit/log"
-	prometheus "github.com/go-kit/kit/metrics/prometheus"
 	lightsteptracergo "github.com/lightstep/lightstep-tracer-go"
 	group "github.com/oklog/oklog/pkg/group"
 	opentracinggo "github.com/opentracing/opentracing-go"
 	zipkingoopentracing "github.com/openzipkin/zipkin-go-opentracing"
-	prometheus1 "github.com/prometheus/client_golang/prometheus"
 	promhttp "github.com/prometheus/client_golang/prometheus/promhttp"
+	"net"
+	http1 "net/http"
+	"os"
+	"os/signal"
 	appdash "sourcegraph.com/sourcegraph/appdash"
 	opentracing "sourcegraph.com/sourcegraph/appdash/opentracing"
+	"syscall"
 )
 
 var tracer opentracinggo.Tracer
@@ -107,20 +104,12 @@ func initHttpHandler(endpoints endpoint.Endpoints, g *group.Group) {
 }
 func getServiceMiddleware(logger log.Logger) (mw []service.Middleware) {
 	mw = []service.Middleware{}
-	mw = addDefaultServiceMiddleware(logger, mw)
 	// Append your middleware here
 
 	return
 }
 func getEndpointMiddleware(logger log.Logger) (mw map[string][]endpoint1.Middleware) {
 	mw = map[string][]endpoint1.Middleware{}
-	duration := prometheus.NewSummaryFrom(prometheus1.SummaryOpts{
-		Help:      "Request duration in seconds.",
-		Name:      "request_duration_seconds",
-		Namespace: "example",
-		Subsystem: "files_creator",
-	}, []string{"method", "success"})
-	addDefaultEndpointMiddleware(logger, duration, mw)
 	// Add you endpoint middleware here
 
 	return
