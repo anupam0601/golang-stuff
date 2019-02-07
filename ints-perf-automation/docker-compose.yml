@@ -4,11 +4,11 @@ services:
   #   build:
   #     context: .
   #     dockerfile: file_monitoring/Dockerfile
+  #   container_name: file_monitoring
+  #   ports: []
   #   restart: always
   #   volumes:
   #   - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
-  #   container_name: file_monitoring
-  #   ports: []
   files_creator:
     build:
       context: .
@@ -23,8 +23,8 @@ services:
   #   build:
   #     context: .
   #     dockerfile: files_uploader/Dockerfile
+  #   container_name: files_uploader
+  #   ports: []
   #   restart: always
   #   volumes:
   #   - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
-  #   container_name: files_uploader
-  #   ports: []

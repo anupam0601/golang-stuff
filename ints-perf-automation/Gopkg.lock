@@ -66,11 +66,12 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:a47451720d65284aa06afabf3841a3f499002b9065295980232956bf2c166de0"
+  digest = "1:2936d9e776af38dab2dd5369354f962bd65397d1f26c211817153b802990582b"
   name = "github.com/go-kit/kit"
   packages = [
     "endpoint",
     "log",
+    "log/level",
     "metrics",
     "metrics/internal/lv",
     "metrics/prometheus",
@@ -88,6 +89,14 @@
   pruneopts = "UT"
   revision = "07c9b44f60d7ffdfb7d8efe1ad539965737836dc"
   version = "v0.4.0"
+
+[[projects]]
+  digest = "1:bed9d72d596f94e65fff37f4d6c01398074a6bb1c3f3ceff963516bd01db6ff5"
+  name = "github.com/gofrs/uuid"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "6b08a5c5172ba18946672b49749cde22873dd7c2"
+  version = "v3.2.0"
 
 [[projects]]
   digest = "1:db75c3971e4fcaa251e4726f132fab3b17ad90beb7829d90ade140533b577861"
@@ -124,12 +133,31 @@
   revision = "2e65f85255dbc3072edf28d6b5b8efc472979f5a"
 
 [[projects]]
+  digest = "1:ca59b1175189b3f0e9f1793d2c350114be36eaabbe5b9f554b35edee1de50aea"
+  name = "github.com/gorilla/mux"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a7962380ca08b5a188038c69871b8d3fbdf31e89"
+  version = "v1.7.0"
+
+[[projects]]
   branch = "master"
   digest = "1:a64e323dc06b73892e5bb5d040ced475c4645d456038333883f58934abbf6f72"
   name = "github.com/kr/logfmt"
   packages = ["."]
   pruneopts = "UT"
   revision = "b84e30acd515aadc4b783ad4ff83aff3299bdfe0"
+
+[[projects]]
+  digest = "1:8ef506fc2bb9ced9b151dafa592d4046063d744c646c1bbe801982ce87e4bc24"
+  name = "github.com/lib/pq"
+  packages = [
+    ".",
+    "oid",
+  ]
+  pruneopts = "UT"
+  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:078d0b47a888546a9f8810d64f76792f70b2fa564ad2bbe6dddd002c032ce7cf"
@@ -403,10 +431,14 @@
   input-imports = [
     "github.com/go-kit/kit/endpoint",
     "github.com/go-kit/kit/log",
+    "github.com/go-kit/kit/log/level",
     "github.com/go-kit/kit/metrics",
     "github.com/go-kit/kit/metrics/prometheus",
     "github.com/go-kit/kit/tracing/opentracing",
     "github.com/go-kit/kit/transport/http",
+    "github.com/gofrs/uuid",
+    "github.com/gorilla/mux",
+    "github.com/lib/pq",
     "github.com/lightstep/lightstep-tracer-go",
     "github.com/oklog/oklog/pkg/group",
     "github.com/opentracing/opentracing-go",

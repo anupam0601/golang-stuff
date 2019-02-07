@@ -2,24 +2,40 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strconv"
 )
 
 // FilesCreatorService describes the service.
 type FilesCreatorService interface {
 	// Add your methods here
 	// e.x: Foo(ctx context.Context,s string)(rs string, err error)
-	CreateFiles(ctx context.Context, fileType string) string
+	Create(ctx context.Context, fileDescriptor FileDescriptor) string
+}
+
+type FileDescriptor struct {
+	ID            string `json:"id,omitempty"`
+	Name          string `json:"name"`
+	NumberOfFiles string `json:"number_of_files"`
+	FileType      string `json:"file_type"`
 }
 
 type basicFilesCreatorService struct{}
 
-func (b *basicFilesCreatorService) CreateFiles(ctx context.Context, fileType string) (s0 string) {
-	// TODO implement the business logic of CreateFiles
-	if fileType == "txt" {
-		log.Printf("Creating file of type: %s", fileType)
+func (b *basicFilesCreatorService) Create(ctx context.Context, fileDescriptor FileDescriptor) (s0 string) {
+	// TODO implement the business logic of Create
+
+	totalfilesToCreate, err := strconv.Atoi(fileDescriptor.NumberOfFiles)
+	if err != nil {
+		log.Println(err)
 	}
-	return fileType
+	if fileDescriptor.FileType == "txt" {
+		for i := 0; i <= totalfilesToCreate; i++ {
+			go fmt.Println(i)
+		}
+	}
+	return fileDescriptor.Name
 }
 
 // NewBasicFilesCreatorService returns a naive, stateless implementation of FilesCreatorService.

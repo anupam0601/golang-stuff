@@ -10,15 +10,15 @@ import (
 // meant to be used as a helper struct, to collect all of the endpoints into a
 // single parameter.
 type Endpoints struct {
-	CreateFilesEndpoint endpoint.Endpoint
+	CreateEndpoint endpoint.Endpoint
 }
 
 // New returns a Endpoints struct that wraps the provided service, and wires in all of the
 // expected endpoint middlewares
 func New(s service.FilesCreatorService, mdw map[string][]endpoint.Middleware) Endpoints {
-	eps := Endpoints{CreateFilesEndpoint: MakeCreateFilesEndpoint(s)}
-	for _, m := range mdw["CreateFiles"] {
-		eps.CreateFilesEndpoint = m(eps.CreateFilesEndpoint)
+	eps := Endpoints{CreateEndpoint: MakeCreateEndpoint(s)}
+	for _, m := range mdw["Create"] {
+		eps.CreateEndpoint = m(eps.CreateEndpoint)
 	}
 	return eps
 }

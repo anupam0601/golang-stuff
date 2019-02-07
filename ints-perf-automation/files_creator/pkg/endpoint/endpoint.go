@@ -7,31 +7,31 @@ import (
 	endpoint "github.com/go-kit/kit/endpoint"
 )
 
-// CreateFilesRequest collects the request parameters for the CreateFiles method.
-type CreateFilesRequest struct {
-	FileType string `json:"file_type"`
+// CreateRequest collects the request parameters for the Create method.
+type CreateRequest struct {
+	FileDescriptor service.FileDescriptor `json:"file_descriptor"`
 }
 
-// CreateFilesResponse collects the response parameters for the CreateFiles method.
-type CreateFilesResponse struct {
+// CreateResponse collects the response parameters for the Create method.
+type CreateResponse struct {
 	S0 string `json:"s0"`
 }
 
-// MakeCreateFilesEndpoint returns an endpoint that invokes CreateFiles on the service.
-func MakeCreateFilesEndpoint(s service.FilesCreatorService) endpoint.Endpoint {
+// MakeCreateEndpoint returns an endpoint that invokes Create on the service.
+func MakeCreateEndpoint(s service.FilesCreatorService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req := request.(CreateFilesRequest)
-		s0 := s.CreateFiles(ctx, req.FileType)
-		return CreateFilesResponse{S0: s0}, nil
+		req := request.(CreateRequest)
+		s0 := s.Create(ctx, req.FileDescriptor)
+		return CreateResponse{S0: s0}, nil
 	}
 }
 
-// CreateFiles implements Service. Primarily useful in a client.
-func (e Endpoints) CreateFiles(ctx context.Context, fileType string) (s0 string) {
-	request := CreateFilesRequest{FileType: fileType}
-	response, err := e.CreateFilesEndpoint(ctx, request)
+// Create implements Service. Primarily useful in a client.
+func (e Endpoints) Create(ctx context.Context, fileDescriptor service.FileDescriptor) (s0 string) {
+	request := CreateRequest{FileDescriptor: fileDescriptor}
+	response, err := e.CreateEndpoint(ctx, request)
 	if err != nil {
 		return
 	}
-	return response.(CreateFilesResponse).S0
+	return response.(CreateResponse).S0
 }

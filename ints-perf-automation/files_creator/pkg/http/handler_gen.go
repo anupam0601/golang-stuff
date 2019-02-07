@@ -11,6 +11,6 @@ import (
 // predefined paths.
 func NewHTTPHandler(endpoints endpoint.Endpoints, options map[string][]http.ServerOption) http1.Handler {
 	m := http1.NewServeMux()
-	makeCreateFilesHandler(m, endpoints, options["CreateFiles"])
+	makeCreateHandler(m, endpoints, options["Create"])
 	return m
 }
