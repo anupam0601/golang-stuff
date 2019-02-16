@@ -66,15 +66,12 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:2936d9e776af38dab2dd5369354f962bd65397d1f26c211817153b802990582b"
+  digest = "1:1c2dabaae87fb3db3fd2b5c52407397c0ea4e1d24e8abf884ba15ce9617708ad"
   name = "github.com/go-kit/kit"
   packages = [
     "endpoint",
     "log",
     "log/level",
-    "metrics",
-    "metrics/internal/lv",
-    "metrics/prometheus",
     "tracing/opentracing",
     "transport/http",
   ]
@@ -432,8 +429,6 @@
     "github.com/go-kit/kit/endpoint",
     "github.com/go-kit/kit/log",
     "github.com/go-kit/kit/log/level",
-    "github.com/go-kit/kit/metrics",
-    "github.com/go-kit/kit/metrics/prometheus",
     "github.com/go-kit/kit/tracing/opentracing",
     "github.com/go-kit/kit/transport/http",
     "github.com/gofrs/uuid",
@@ -443,8 +438,8 @@
     "github.com/oklog/oklog/pkg/group",
     "github.com/opentracing/opentracing-go",
     "github.com/openzipkin/zipkin-go-opentracing",
-    "github.com/prometheus/client_golang/prometheus",
     "github.com/prometheus/client_golang/prometheus/promhttp",
+    "golang.org/x/net/context",
     "sourcegraph.com/sourcegraph/appdash",
     "sourcegraph.com/sourcegraph/appdash/opentracing",
   ]

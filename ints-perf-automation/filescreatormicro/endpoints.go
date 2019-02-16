@@ -2,21 +2,12 @@ package filescreatormicro
 
 import (
 	"context"
-	"errors"
-	"strings"
-
 	"github.com/go-kit/kit/endpoint"
-)
-
-var (
-	//ErrRequestTypeNotFound custom error
-	ErrRequestTypeNotFound = errors.New("Request type only valid for 'anupam'")
 )
 
 //FilesCreateRequest request
 type FilesCreateRequest struct {
-	RequestType string
-	Param       string
+	FileDescriptor FileDescriptor `json:"file_descriptor"`
 }
 
 //FilesCreateResponse response
@@ -35,19 +26,22 @@ type Endpoints struct {
 func MakeFilesCreateEndpoint(svc FilesCreatorService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(FilesCreateRequest)
-		var (
-			txt   string
-			param string
-		)
+		msg, err := svc.Create(req.FileDescriptor)
+		return FilesCreateResponse{Message:msg, Err:err}, nil
+		//var (
+		//	txt   string
+		//	param string
+		//)
+		//
+		//param = req.Param
+		//
+		//if strings.EqualFold(req.RequestType, "Word") {
+		//	//Word referring to Word method of our interface FilesCreatorService
+		//	txt = svc.Word(param)
+		//} else {
+		//	return nil, ErrRequestTypeNotFound
+		//}
+		//return FilesCreateResponse{Message: txt}, nil
 
-		param = req.Param
-
-		if strings.EqualFold(req.RequestType, "Word") {
-			//Word referring to Word method of our interface FilesCreatorService
-			txt = svc.Word(param)
-		} else {
-			return nil, ErrRequestTypeNotFound
-		}
-		return FilesCreateResponse{Message: txt}, nil
 	}
 }

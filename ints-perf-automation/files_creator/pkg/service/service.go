@@ -2,9 +2,10 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"strconv"
+
+	"github.com/gofrs/uuid"
 )
 
 // FilesCreatorService describes the service.
@@ -30,9 +31,18 @@ func (b *basicFilesCreatorService) Create(ctx context.Context, fileDescriptor Fi
 	if err != nil {
 		log.Println(err)
 	}
+
+	// FileName := id + "-" + fileDescriptor.Name
+
 	if fileDescriptor.FileType == "txt" {
 		for i := 0; i <= totalfilesToCreate; i++ {
-			go fmt.Println(i)
+			go func() {
+				uuid, _ := uuid.NewV4()
+				id := uuid.String()
+				fileDescriptor.ID = id
+				log.Println(id + "-" + fileDescriptor.Name)
+				// log.Println("Unique File ====>", FileName)
+			}()
 		}
 	}
 	return fileDescriptor.Name
