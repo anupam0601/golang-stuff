@@ -15,11 +15,7 @@ import (
 func main() {
 	ctx := context.Background()
 	errChan := make(chan error)
-	var svc filescreatormicro.FilesCreatorService
-	svc = filescreatormicro.BasicFilesCreator{}
-	endpoint := filescreatormicro.Endpoints{
-		FilesCreateEndpoint: filescreatormicro.MakeFilesCreateEndpoint(svc),
-	}
+
 	// Logging domain.
 	var logger log.Logger
 	{
@@ -27,6 +23,13 @@ func main() {
 		logger = log.With(logger, "ts", log.DefaultTimestampUTC)
 		logger = log.With(logger, "caller", log.DefaultCaller)
 	}
+	var svc filescreatormicro.FilesCreatorService
+	svc = filescreatormicro.BasicFilesCreator{}
+	svc = filescreatormicro.LoggingMiddleware(logger)(svc)
+	endpoint := filescreatormicro.Endpoints{
+		FilesCreateEndpoint: filescreatormicro.MakeFilesCreateEndpoint(svc),
+	}
+
 
 	r := filescreatormicro.MakeHttpHandler(ctx, endpoint, logger)
 

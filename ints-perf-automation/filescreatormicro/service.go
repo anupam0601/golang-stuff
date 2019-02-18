@@ -1,6 +1,9 @@
 package filescreatormicro
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type FilesCreatorService interface {
 	Create(fileDescriptor FileDescriptor) (string, error)
@@ -14,11 +17,15 @@ type FileDescriptor struct {
 	FileType string `json:"file_type"`
 }
 
-
 type BasicFilesCreator struct{}
 
 // Implement
 func (BasicFilesCreator) Create(fileDescriptor FileDescriptor) (string, error) {
+	time.Sleep(10 * time.Second)
 	fmt.Println("File metadata ====>",fileDescriptor)
 	return fileDescriptor.ID, nil
 }
+
+// create type that return function.
+// this will be needed in main.go
+type ServiceMiddleware func (service FilesCreatorService) FilesCreatorService
