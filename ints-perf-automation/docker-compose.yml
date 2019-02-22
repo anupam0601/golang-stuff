@@ -11,13 +11,25 @@ services:
 #    volumes:
 #    - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
 
-  filescreatormicro:
+  filescreatormicro_one:
     build:
       context: .
       dockerfile: filescreatormicro/Dockerfile
-    container_name: filescreatormicro
+    container_name: filescreatormicro_one
     ports:
+      # First port is host port and second is container port
       - 8080:8080
+    restart: always
+    volumes:
+      - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
+  filescreatormicro_two:
+    build:
+      context: .
+      dockerfile: filescreatormicro/Dockerfile
+    container_name: filescreatormicro_two
+    ports:
+      # First port is host port and second is container port
+      - 8082:8080
     restart: always
     volumes:
       - .:/go/src/github.com/anupam0601/golang-stuff/ints-perf-automation
