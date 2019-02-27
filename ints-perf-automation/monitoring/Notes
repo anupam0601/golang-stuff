@@ -1,0 +1,5 @@
+#NOTES to run prometheus and to expose prometheus go app's metrics
+
+1. Run main.go which exposes go metrics to /metrics endpoint to port 2112
+2. Run prometheus which scrapes localhost:2112 where go app's metrics are exposed
+3. command to run prometheus - prometheus --config.file=prometheus.yml

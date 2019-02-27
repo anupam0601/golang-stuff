@@ -66,12 +66,15 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:1c2dabaae87fb3db3fd2b5c52407397c0ea4e1d24e8abf884ba15ce9617708ad"
+  digest = "1:2936d9e776af38dab2dd5369354f962bd65397d1f26c211817153b802990582b"
   name = "github.com/go-kit/kit"
   packages = [
     "endpoint",
     "log",
     "log/level",
+    "metrics",
+    "metrics/internal/lv",
+    "metrics/prometheus",
     "tracing/opentracing",
     "transport/http",
   ]
@@ -260,11 +263,12 @@
   version = "v2.0.7"
 
 [[projects]]
-  digest = "1:93a746f1060a8acbcf69344862b2ceced80f854170e1caae089b2834c5fbf7f4"
+  digest = "1:ef03fb1dae4d010196652653f00a8002e94c19bcabdc8ca5100a804ffef63a47"
   name = "github.com/prometheus/client_golang"
   packages = [
     "prometheus",
     "prometheus/internal",
+    "prometheus/promauto",
     "prometheus/promhttp",
   ]
   pruneopts = "UT"
@@ -429,6 +433,8 @@
     "github.com/go-kit/kit/endpoint",
     "github.com/go-kit/kit/log",
     "github.com/go-kit/kit/log/level",
+    "github.com/go-kit/kit/metrics",
+    "github.com/go-kit/kit/metrics/prometheus",
     "github.com/go-kit/kit/tracing/opentracing",
     "github.com/go-kit/kit/transport/http",
     "github.com/gofrs/uuid",
@@ -438,6 +444,8 @@
     "github.com/oklog/oklog/pkg/group",
     "github.com/opentracing/opentracing-go",
     "github.com/openzipkin/zipkin-go-opentracing",
+    "github.com/prometheus/client_golang/prometheus",
+    "github.com/prometheus/client_golang/prometheus/promauto",
     "github.com/prometheus/client_golang/prometheus/promhttp",
     "golang.org/x/net/context",
     "sourcegraph.com/sourcegraph/appdash",
