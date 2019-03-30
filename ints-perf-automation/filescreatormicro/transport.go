@@ -25,7 +25,7 @@ func MakeHttpHandler(ctx context.Context, endpoint Endpoints, logger log.Logger)
 		httptransport.ServerErrorEncoder(encodeError),
 	}
 
-	r.Methods("POST").Path("/create").Handler(httptransport.NewServer(
+	r.Methods("POST").Path("/create/{type}/{param}").Handler(httptransport.NewServer(
 		endpoint.FilesCreateEndpoint,
 		decodeFilesCreateRequest,
 		encodeResponse,
@@ -35,25 +35,21 @@ func MakeHttpHandler(ctx context.Context, endpoint Endpoints, logger log.Logger)
 }
 
 func decodeFilesCreateRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	//vars := mux.Vars(r)
-	//requestType, ok := vars["type"]
-	//if !ok {
-	//	return nil, ErrBadRouting
-	//}
-	//vparam, ok := vars["param"]
-	//if !ok {
-	//	return nil, ErrBadRouting
-	//}
-	//return FilesCreateRequest{
-	//	RequestType: requestType,
-	//	Param:       vparam,
-	//}, nil
-	req := FilesCreateRequest{}
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil{
+	var req FilesCreateRequest
+	if e := json.NewDecoder(r.Body).Decode(&req.)
+	vars := mux.Vars(r)
+	requestType, ok := vars["type"]
+	if !ok {
 		return nil, ErrBadRouting
 	}
-	return req, nil
+	vparam, ok := vars["param"]
+	if !ok {
+		return nil, ErrBadRouting
+	}
+	return FilesCreateRequest{
+		RequestType: requestType,
+		Param:       vparam,
+	}, nil
 }
 
 // errorer is implemented by all concrete response types that may contain
