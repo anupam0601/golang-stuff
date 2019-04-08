@@ -1,38 +1,41 @@
 package main
 
 import (
-	"github.com/anupam0601/golang-stuff/rest-prod/todo"
-	"github.com/go-chi/chi"
-	"github.com/go-chi/render"
-	//"github.com/labstack/echo/middleware"
 	"log"
 	"net/http"
+
+	"github.com/anupam0601/golang-stuff/rest-prod/config"
+	"github.com/anupam0601/golang-stuff/rest-prod/todo"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/render"
 )
 
-func Routes() *chi.Mux{
+func Routes(configuration *config.Config) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON), // Set content-Type headers as application/json
-		//middleware.Logger,                             // Log API request calls
-		//middleware.DefaultCompress,                    // Compress results, mostly gzipping assets and json
-		//middleware.RedirectSlashes,                    // Redirect slashes to no slash URL versions
-		//middleware.Recoverer,                          // Recover from panics without crashing server
+		middleware.Logger,          // Log API request calls
+		middleware.DefaultCompress, // Compress results, mostly gzipping assets and json
+		middleware.RedirectSlashes, // Redirect slashes to no slash URL versions
+		middleware.Recoverer,       // Recover from panics without crashing server
 	)
-	router.Route("/v1", func(r chi.Router) {	// Version API’s, so you can make api updates without breaking old clients
-		r.Mount("/api/todo", todo.Routes())  // Group routes into logical groups in individual packages, and then mount those routes
+
+	router.Route("/v1", func(r chi.Router) {
+		r.Mount("/api/todo", todo.New(configuration).Routes())
 	})
 
-	router.Route("/v2", func(r chi.Router) {	// Version API’s, so you can make api updates without breaking old clients
-		r.Mount("/api/todo", todo.Routes())  // Group routes into logical groups in individual packages, and then mount those routes
-	})
-
-	return  router
+	return router
 }
 
-func main(){
-	router := Routes()
+func main() {
+	configuration, err := config.New()
+	if err != nil {
+		log.Panicln("Configuration error", err)
+	}
+	router := Routes(configuration)
 
-	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error{
+	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
 		log.Printf("%s %s\n", method, route) // Walk and print out all routes
 		return nil
 	}
@@ -40,7 +43,6 @@ func main(){
 		log.Panicf("Logging err: %s\n", err.Error()) // panic if there is an error
 	}
 
-	log.Fatal(http.ListenAndServe(":8083", router)) // Note, the port is usually gotten from the environment.
+	log.Println("Serving application at PORT :" + configuration.Constants.PORT)
+	log.Fatal(http.ListenAndServe(":"+configuration.Constants.PORT, router)) // Note, the port is usually gotten from the environment.
 }
-
-
