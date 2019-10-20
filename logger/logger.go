@@ -64,13 +64,13 @@ func NewLogger(config Configuration, loggerInstance int) error {
 		}
 		log = logger
 		return nil
-	case InstanceLogrusLogger:
-		logger, err := newLogrusLogger(config)
-		if err != nil {
-			return err
-		}
-		log = logger
-		return nil
+	//case InstanceLogrusLogger:
+	//	logger, err := newLogrusLogger(config)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	log = logger
+	//	return nil
 
 	default:
 		return errInvalidLoggerInstance
